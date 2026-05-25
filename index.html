@@ -398,7 +398,7 @@ body {
 </div>
 
 <script>
-// ── AUTOPLAY MUSIK SAAT USER SCROLL ──
+// ── AUTOPLAY MUSIK DENGAN DETEKSI MULTI-INTERAKSI ──
 let musicPlaying = false;
 const bgMusic = document.getElementById('bg-music');
 const musicBtn = document.getElementById('music-btn');
@@ -408,23 +408,40 @@ function playMusic() {
     bgMusic.play().then(() => {
       musicPlaying = true;
       musicBtn.innerHTML = '🔇 Pause Music';
+      // Sukses berputar, hapus semua pemicu pendeteksi aktivitas
+      removeAllInteractions();
     }).catch(err => {
-      console.log("Autoplay ditahan oleh browser. Menunggu klik/sentuhan.");
+      // Browser memblokir autoplay, terus biarkan event listener aktif hingga interaksi valid terjadi
+      console.log("Autoplay ditangguhkan browser. Menunggu aktivitas interaksi pengguna...");
     });
   }
 }
 
-// Deteksi Scroll Pertama Kali
-function handleFirstScroll() {
+// Menangani interaksi pertama kali (baik scroll, sentuh, geser, klik, atau ketukan)
+function handleUserInteraction() {
   playMusic();
-  window.removeEventListener('scroll', handleFirstScroll);
-  document.removeEventListener('touchstart', handleFirstScroll);
 }
 
-window.addEventListener('scroll', handleFirstScroll, { passive: true });
-document.addEventListener('touchstart', handleFirstScroll, { passive: true });
+function removeAllInteractions() {
+  window.removeEventListener('scroll', handleUserInteraction);
+  document.removeEventListener('touchstart', handleUserInteraction);
+  document.removeEventListener('touchend', handleUserInteraction);
+  document.removeEventListener('touchmove', handleUserInteraction);
+  document.removeEventListener('mousedown', handleUserInteraction);
+  document.removeEventListener('click', handleUserInteraction);
+  document.removeEventListener('wheel', handleUserInteraction);
+}
 
-// Kontrol Tombol Musik Manual
+// Daftarkan semua interaksi pemicu yang mungkin dilakukan pengguna untuk scroll atau menyentuh layar
+window.addEventListener('scroll', handleUserInteraction, { passive: true });
+document.addEventListener('touchstart', handleUserInteraction, { passive: true });
+document.addEventListener('touchend', handleUserInteraction, { passive: true });
+document.addEventListener('touchmove', handleUserInteraction, { passive: true });
+document.addEventListener('mousedown', handleUserInteraction, { passive: true });
+document.addEventListener('click', handleUserInteraction, { passive: true });
+document.addEventListener('wheel', handleUserInteraction, { passive: true });
+
+// Kontrol Tombol Musik Manual (Tombol ini akan selalu berfungsi)
 function toggleMusic() {
   if (musicPlaying) {
     bgMusic.pause();
@@ -434,8 +451,9 @@ function toggleMusic() {
     bgMusic.play().then(() => {
       musicPlaying = true;
       musicBtn.innerHTML = '🔇 Pause Music';
+      removeAllInteractions();
     }).catch(error => {
-      console.log("Gagal memutar audio: ", error);
+      console.log("Gagal memutar audio secara manual: ", error);
     });
   }
 }

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dearest Naii</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg-dark: #0b0711;       /* Hitam violet mewah */
+  --card-bg: rgba(22, 17, 29, 0.65); /* Ungu gelap transparan */
+  --gold: #d4af37;          /* Emas klasik */
+  --gold-light: #f5e4bc;    /* Champagne gold */
+  --rose: #c39299;          /* Soft dusty rose */
+  --text-light: #f7f5f0;    /* Putih gading */
+  --text-muted: #a69fa9;    /* Abu-abu lembut */
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: var(--bg-dark);
+  background-image: 
+    radial-gradient(circle at 20% 20%, rgba(195, 146, 153, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.06) 0%, transparent 50%);
+  color: var(--text-light);
+  overflow-x: hidden;
+  padding: 40px 15px;
+  line-height: 1.7;
+}
+
+/* ── CONTAINER UTAMA ── */
+.container {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+/* ── HERO BANNER ── */
+.hero {
+  position: relative;
+  text-align: center;
+  padding: 70px 25px;
+  background: linear-gradient(180deg, rgba(22, 17, 29, 0.9) 0%, rgba(11, 7, 17, 0.5) 100%);
+  border-radius: 20px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  margin-bottom: 40px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+}
+
+.hero-subtitle-top {
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: var(--rose);
+  margin-bottom: 15px;
+}
+
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3.2rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--gold-light);
+  line-height: 1.2;
+  margin-bottom: 15px;
+  letter-spacing: 1px;
+}
+
+.hero-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  max-width: 480px;
+  margin: 0 auto 30px auto;
+  line-height: 1.5;
+}
+
+/* ── TOMBOL PREMIUM ── */
+.btn-group {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.btn {
+  background: transparent;
+  color: var(--gold-light);
+  border: 1px solid var(--gold);
+  padding: 12px 28px;
+  border-radius: 30px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  position: relative;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(212,175,55,0.1), rgba(195,146,153,0.15));
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: -1;
+}
+
+.btn:hover {
+  color: #fff;
+  border-color: var(--gold-light);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.15);
+}
+
+.btn:hover::before {
+  opacity: 1;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+/* ── FOTO GRID (2 FOTO) ── */
+.photo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+@media (max-width: 580px) {
+  .photo-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+.photo-card {
+  background: var(--card-bg);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.photo-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.photo-frame {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  aspect-ratio: 4/5;
+  background-color: #16121d;
+}
+
+.photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(10%) contrast(105%);
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.photo-card:hover .photo-img {
+  transform: scale(1.05);
+}
+
+.photo-caption {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--gold-light);
+  text-align: center;
+  margin-top: 12px;
+  letter-spacing: 0.5px;
+}
+
+/* ── CARDS (DOA & SURAT) ── */
+.card {
+  background: var(--card-bg);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 35px 30px;
+  margin-bottom: 40px;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem;
+  font-weight: 300;
+  text-align: center;
+  color: var(--gold-light);
+  margin-bottom: 25px;
+  letter-spacing: 1px;
+}
+
+/* ── LIST DOA ELEGAN ── */
+.doa-list {
+  list-style: none;
+}
+
+.doa-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.doa-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.doa-icon {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  color: var(--gold);
+  line-height: 1;
+  font-weight: 300;
+}
+
+.doa-text {
+  font-size: 0.95rem;
+  color: var(--text-light);
+  font-weight: 300;
+  letter-spacing: 0.2px;
+}
+
+/* ── SURAT CINTA / PESAN ELEGAN ── */
+.letter-text {
+  font-size: 0.95rem;
+  line-height: 1.9;
+  color: #dfdae3;
+  text-align: justify;
+  font-weight: 300;
+  margin-bottom: 20px;
+}
+
+.letter-signature {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-style: italic;
+  color: var(--rose);
+  text-align: center;
+  margin-top: 30px;
+}
+
+.sender-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 400;
+  letter-spacing: 2px;
+  color: var(--gold-light);
+  text-align: center;
+  margin-top: 5px;
+}
+
+/* ── PARTIKEL EMAS (GOLD SPARKLES) ── */
+.gold-sparkle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fffdf0 0%, var(--gold-light) 60%, transparent 100%);
+  filter: drop-shadow(0 0 4px var(--gold));
+  animation: drift 1.2s linear forwards;
+}
+
+@keyframes drift {
+  0% { transform: scale(0) rotate(0deg); opacity: 1; }
+  20% { transform: scale(1.2) translateY(-10px); }
+  100% { transform: scale(0.2) translateY(80px) translateX(20px); opacity: 0; }
+}
+
+/* ── FOOTER ── */
+.footer {
+  text-align: center;
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.25);
+  margin-top: 60px;
+  padding-bottom: 30px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  
+  <header class="hero">
+    <p class="hero-subtitle-top">A Proud Milestone</p>
+    <h1 class="hero-title">Happy Graduation, Naii.</h1>
+    <p class="hero-sub">Selamat atas kelulusanmu! Perjalanan panjang penuh kerja keras yang akhirnya bermuara pada pencapaian yang luar biasa ini.</p>
+    
+    <div class="btn-group">
+      <button class="btn" id="music-btn" onclick="toggleMusic()">🎵 Play Music</button>
+      <button class="btn" onclick="triggerGlow()">✨ Spark Joy</button>
+    </div>
+  </header>
+
+  <audio id="bg-music" loop preload="auto">
+    <source src="Sepenuh-Hati.mp3" type="audio/mpeg">
+    Browser kamu tidak mendukung pemutaran musik ini.
+  </audio>
+
+  <div class="photo-grid">
+    <section class="photo-card" data-delay="100">
+      <div class="photo-frame">
+        <img class="photo-img" src="foto2.jpg" alt="Beautiful Graduation Photo" onerror="this.onerror=null; this.src='https://picsum.photos/500/600?random=1';">
+      </div>
+      <p class="photo-caption">The Milestone</p>
+    </section>
+
+    <section class="photo-card" data-delay="250">
+      <div class="photo-frame">
+        <img class="photo-img" src="foto1.jpeg" alt="Joyful Graduate Photo" onerror="this.onerror=null; this.src='https://picsum.photos/500/600?random=2';">
+      </div>
+      <p class="photo-caption">A Bright Horizon</p>
+    </section>
+  </div>
+
+  <section class="card" data-delay="300">
+    <h2 class="section-title">A Symphony of Wishes</h2>
+    <ul class="doa-list">
+      <li class="doa-item">
+        <span class="doa-icon">I.</span>
+        <div class="doa-text">Semoga ilmu luhur yang telah diraih mendatangkan keberkahan, manfaat luas, serta membuka gerbang peluang emas di masa depanmu.</div>
+      </li>
+      <li class="doa-item">
+        <span class="doa-icon">II.</span>
+        <div class="doa-text">Semoga jalan karier, karya, maupun langkah pendidikan lanjutanmu selalu dimudahkan, dilindungi, dan dipenuhi keberhasilan.</div>
+      </li>
+      <li class="doa-item">
+        <span class="doa-icon">III.</span>
+        <div class="doa-text">Tetaplah menjadi sosok yang rendah hati, berani mengeksplorasi potensi baru, dan selalu memancarkan kebaikan di mana pun berada.</div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="card" data-delay="400">
+    <h2 class="section-title">A Letter for You</h2>
+    <p class="letter-text">
+      Hai Naii, di hari kelulusan yang sangat istimewa ini, aku hanya ingin menyampaikan betapa bangganya aku atas segala perjuangan, malam-malam penuh tugas, dan kerja keras tanpa lelah yang telah kamu lalui untuk sampai di titik bersejarah ini.
+    </p>
+    <p class="letter-text">
+      Gelar ini adalah bukti dari dedikasi tinggi serta ketangguhan luar biasa yang ada dalam dirimu. Teruslah melangkah maju dengan penuh percaya diri. Dunia luas di luar sana menanti kilau terindah yang kamu miliki. Selamat merayakan pencapaian agung ini, Naii!
+    </p>
+    <p class="letter-signature">With pride and warmest regards,</p>
+    <div class="sender-name">Ara</div>
+  </section>
+
+  <footer class="footer">
+    Adored with elegance &bull; 2026
+  </footer>
+
+</div>
+
+<script>
+// ── AUTOPLAY MUSIK SAAT USER SCROLL ──
+let musicPlaying = false;
+const bgMusic = document.getElementById('bg-music');
+const musicBtn = document.getElementById('music-btn');
+
+function playMusic() {
+  if (!musicPlaying) {
+    bgMusic.play().then(() => {
+      musicPlaying = true;
+      musicBtn.innerHTML = '🔇 Pause Music';
+    }).catch(err => {
+      console.log("Autoplay ditahan oleh browser. Menunggu klik/sentuhan.");
+    });
+  }
+}
+
+// Deteksi Scroll Pertama Kali
+function handleFirstScroll() {
+  playMusic();
+  window.removeEventListener('scroll', handleFirstScroll);
+  document.removeEventListener('touchstart', handleFirstScroll);
+}
+
+window.addEventListener('scroll', handleFirstScroll, { passive: true });
+document.addEventListener('touchstart', handleFirstScroll, { passive: true });
+
+// Kontrol Tombol Musik Manual
+function toggleMusic() {
+  if (musicPlaying) {
+    bgMusic.pause();
+    musicPlaying = false;
+    musicBtn.innerHTML = '🎵 Play Music';
+  } else {
+    bgMusic.play().then(() => {
+      musicPlaying = true;
+      musicBtn.innerHTML = '🔇 Pause Music';
+    }).catch(error => {
+      console.log("Gagal memutar audio: ", error);
+    });
+  }
+}
+
+// ── ELEGAN GOLD SPARKLE GENERATOR ──
+function makeSparkles(count, burst, x, y) {
+  for (let i = 0; i < count; i++) {
+    const s = document.createElement('div');
+    s.className = 'gold-sparkle';
+    
+    const size = Math.random() * 6 + 3;
+    s.style.width = size + 'px';
+    s.style.height = size + 'px';
+    
+    let startX = burst ? x : Math.random() * window.innerWidth;
+    let startY = burst ? y : -20;
+    
+    s.style.left = startX + 'px';
+    s.style.top = startY + 'px';
+    
+    document.body.appendChild(s);
+    
+    let speedX = burst ? (Math.random() - 0.5) * 12 : (Math.random() - 0.5) * 2;
+    let speedY = burst ? (Math.random() - 0.5) * 12 - 4 : Math.random() * 3 + 2;
+    let op = 1;
+    
+    const anim = setInterval(() => {
+      startX += speedX;
+      startY += speedY;
+      speedY += 0.08;
+      op -= 0.015;
+      
+      s.style.left = startX + 'px';
+      s.style.top = startY + 'px';
+      s.style.opacity = op;
+      
+      if (op <= 0 || startY > window.innerHeight) {
+        clearInterval(anim);
+        s.remove();
+      }
+    }, 16);
+  }
+}
+
+setTimeout(() => makeSparkles(15, false), 1000);
+
+function triggerGlow() {
+  makeSparkles(50, true, window.innerWidth / 2, window.innerHeight / 2.5);
+  const title = document.querySelector('.hero-title');
+  title.style.transform = 'scale(1.03)';
+  title.style.transition = 'transform 0.3s ease';
+  setTimeout(() => title.style.transform = 'scale(1)', 300);
+}
+
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const el = e.target;
+      const delay = el.dataset.delay || 0;
+      setTimeout(() => el.classList.add('visible'), +delay);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.photo-card, .card').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
